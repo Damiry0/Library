@@ -4,15 +4,15 @@ using BooksAPI.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers.V2;
+namespace API.Controllers;
 
 [ApiController]
 [Route("api/books")]
-public class BooksController : ControllerBase
+public class BooksController : Controller
 {
-    private readonly Mediator _mediator;
+    private readonly IMediator _mediator;
 
-    public BooksController(Mediator mediator)
+    public BooksController(IMediator mediator)
     {
         _mediator = mediator;
     }
