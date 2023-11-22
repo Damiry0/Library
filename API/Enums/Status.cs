@@ -1,5 +1,5 @@
 ﻿public enum Status
 {
-    Avaleviable = 1,
+    Available = 1,
     Borrowed = 2,
 }

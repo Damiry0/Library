@@ -8,4 +8,6 @@ public class User : Entity
     public string LastName { get; set; }
 
     public List<Borrowing> Borrowings { get; set; }
+    
+    public Department Department { get; set; }
 }

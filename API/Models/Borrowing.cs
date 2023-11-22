@@ -4,7 +4,7 @@ using API.Context;
 
 namespace API.Models;
 
-public partial class Borrowing : Entity
+public class Borrowing : Entity
 {
     public DateTime BorrowDate { get; set; }
     public DateTime? ReturnDate { get; set; }
@@ -12,5 +12,7 @@ public partial class Borrowing : Entity
 
     public bool Status { get; set; }
 
-    public User Borrower { get; set; }
+    public User User { get; set; }
+    
+    public ICollection<Edition> Editions { get; set; }
 }

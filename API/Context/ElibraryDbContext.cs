@@ -30,6 +30,20 @@ public class ElibraryDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Book>()
+            .HasMany<Author>(s => s.Authors)
+            .WithMany(c => c.Books);
+
+        modelBuilder.Entity<Book>()
+            .HasMany<Edition>(s => s.Editions)
+            .WithOne(s => s.Book);
+
+        modelBuilder.Entity<Department>()
+            .HasMany<User>(s => s.Users)
+            .WithOne(c => c.Department)
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ElibraryDbContext).Assembly);
     }
     
@@ -38,4 +52,5 @@ public class ElibraryDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Department> Departments { get; set; }
     public virtual DbSet<Borrowing> Borrowings { get; set; }
+    public virtual DbSet<Edition> Editions { get; set; }
 }

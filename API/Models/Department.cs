@@ -8,4 +8,6 @@ public class Department : Entity
     public string Adrress { get; set; }
     public string Email { get; set; }
     public string Phone { get; set; }
+    
+    public ICollection<User> Users { get; set; }
 }
