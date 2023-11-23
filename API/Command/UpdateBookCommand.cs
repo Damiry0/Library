@@ -3,4 +3,4 @@ using MediatR;
 
 namespace BooksAPI.Command;
 
-public record UpdateBookCommand(Book book): IRequest;
+public record UpdateBookCommand(Book Book): IRequest;
