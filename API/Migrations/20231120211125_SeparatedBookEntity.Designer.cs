@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BooksAPI.Migrations
 {
-    [DbContext(typeof(ElibraryDbContext))]
+    [DbContext(typeof(LibraryDbContext))]
     [Migration("20231120211125_SeparatedBookEntity")]
     partial class SeparatedBookEntity
     {

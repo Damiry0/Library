@@ -1,5 +1,4 @@
-﻿using API.Models;
-using BooksAPI.Command;
+﻿using BooksAPI.Command;
 using BooksAPI.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -37,18 +36,18 @@ public class BooksController : Controller
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post([FromBody] Book book)
+    public async Task<IActionResult> Post(CreateBookCommand command)
     {
-        await _mediator.Send(new CreateBookCommand(book));
+        await _mediator.Send(command);
         return NoContent();
     }
-    
+
     [HttpPut("{book}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Put([FromBody] Book book)
+    public async Task<IActionResult> Put(UpdateBookCommand book, Guid id)
     {
-        await _mediator.Send(new UpdateBookCommand(book));
+        await _mediator.Send(book with { Id = id });
         return NoContent();
     }
 

@@ -6,21 +6,19 @@ namespace BooksAPI.Command;
 
 public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand>
 {
-    private readonly ElibraryDbContext _context;
-    
-    public CreateBookCommandHandler(ElibraryDbContext context)
+    private readonly LibraryDbContext _context;
+
+    public CreateBookCommandHandler(LibraryDbContext context)
     {
         _context = context;
     }
 
     public async Task Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
-        if (request.Book is not null)
-        {
-            await _context.Books.AddAsync(request.Book, cancellationToken);
-        }
-        
+        var book = Book.Create(request.Title, request.PublicationDate, request.Isbn, request.Pages, request.Amount,
+            request.Description, request.Authors, request.Editions);
 
-        return ;
+        await _context.Books.AddAsync(book, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 };

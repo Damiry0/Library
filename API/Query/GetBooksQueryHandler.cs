@@ -7,9 +7,9 @@ namespace BooksAPI.Query;
 
 public class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, IEnumerable<BookDto>>
 {
-    private readonly ElibraryDbContext _context;
+    private readonly LibraryDbContext _context;
 
-    public GetBooksQueryHandler(ElibraryDbContext context)
+    public GetBooksQueryHandler(LibraryDbContext context)
     {
         _context = context;
     }
@@ -17,7 +17,8 @@ public class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, IEnumerable<B
     public async Task<IEnumerable<BookDto>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
         var books = await _context.Books
-            .Select(x => new BookDto())
+            .Select(x => new BookDto(x.Title, x.PublicationDate, x.Isbn, x.Pages, x.Amount, x.Description, x.Authors,
+                x.Editions))
             .ToListAsync(cancellationToken);
 
         return books;

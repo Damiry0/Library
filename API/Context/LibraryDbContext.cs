@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Context;
 
-public class ElibraryDbContext : DbContext
+public class LibraryDbContext : DbContext
 {
-    public ElibraryDbContext()
+    public LibraryDbContext()
     {
     }
 
-    public ElibraryDbContext(DbContextOptions<ElibraryDbContext> options)
+    public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
         : base(options)
     {
     }
@@ -20,14 +20,12 @@ public class ElibraryDbContext : DbContext
             .AddJsonFile("appsettings.json", false, true)
             .Build()
             .GetConnectionString("Default");
-        
-        optionsBuilder.UseSqlServer(connectionString, options =>
-        {
-            options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-        });
+
+        optionsBuilder.UseSqlServer(connectionString,
+            options => { options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null); });
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Book>()
@@ -42,11 +40,11 @@ public class ElibraryDbContext : DbContext
             .HasMany<User>(s => s.Users)
             .WithOne(c => c.Department)
             .OnDelete(DeleteBehavior.NoAction);
-        
-        
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ElibraryDbContext).Assembly);
+
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryDbContext).Assembly);
     }
-    
+
     public virtual DbSet<Author> Authors { get; set; }
     public virtual DbSet<Book> Books { get; set; }
     public virtual DbSet<User> Users { get; set; }

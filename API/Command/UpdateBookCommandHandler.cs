@@ -1,4 +1,5 @@
 ﻿using API.Context;
+using API.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,23 +7,27 @@ namespace BooksAPI.Command;
 
 public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand>
 {
-    private readonly ElibraryDbContext _context;
-    
-    public UpdateBookCommandHandler(ElibraryDbContext context)
+    private readonly LibraryDbContext _context;
+
+    public UpdateBookCommandHandler(LibraryDbContext context)
     {
         _context = context;
     }
-    
+
     public async Task Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {
-        if (request.Book is not null)
+        var book = await _context.Books.AsTracking().Where(x => x.Id == request.Id)
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+        if (book is null)
         {
-            _context.Books.Update(request.Book);
-            await _context.SaveChangesAsync(cancellationToken);
+            throw new Exception("Book cannot be null");
         }
 
-        return ;
+        book = Book.Create(request.Title, request.PublicationDate, request.Isbn, request.Pages, request.Amount,
+            request.Description, request.Authors, request.Editions);
+
+        _context.Update(book);
+        _context.SaveChangesAsync(cancellationToken);
     }
-    
-    
 };

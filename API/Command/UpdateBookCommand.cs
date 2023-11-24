@@ -3,4 +3,5 @@ using MediatR;
 
 namespace BooksAPI.Command;
 
-public record UpdateBookCommand(Book Book): IRequest;
+public record UpdateBookCommand(string Title, DateTime PublicationDate, string Isbn, int Pages, int Amount,
+    string Description, IEnumerable<Author> Authors, IEnumerable<Edition> Editions, Guid Id) : IRequest;

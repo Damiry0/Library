@@ -6,9 +6,9 @@ namespace BooksAPI.Command;
 
 public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand>
 {
-    private readonly ElibraryDbContext _context;
+    private readonly LibraryDbContext _context;
 
-    public DeleteBookCommandHandler(ElibraryDbContext context)
+    public DeleteBookCommandHandler(LibraryDbContext context)
     {
         _context = context;
     }
@@ -17,9 +17,12 @@ public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand>
     {
         var book = await _context.Books.Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken: cancellationToken);
-        
-        if (book is null) throw new Exception("Book cannot be null");
-        
+
+        if (book is null)
+        {
+            throw new Exception("Book cannot be null");
+        }
+
         _context.Remove(book);
         _context.SaveChangesAsync(cancellationToken);
     }
