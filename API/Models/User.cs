@@ -6,8 +6,21 @@ public class User : Entity
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
-
-    public List<Borrowing> Borrowings { get; set; }
-    
     public Department Department { get; set; }
+
+    private readonly List<Borrowing> _borrowings = new();
+    public List<Borrowing> Borrowings => _borrowings;
+
+
+    public User()
+    {
+        // EF
+    }
+
+    private User(string firstName, string lastName, Department department)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Department = department;
+    }
 }

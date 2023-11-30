@@ -42,7 +42,7 @@ namespace BooksAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.Book", b =>
@@ -50,6 +50,9 @@ namespace BooksAPI.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -62,11 +65,8 @@ namespace BooksAPI.Migrations
                     b.Property<int>("Pages")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("PublicationDate")
+                    b.Property<DateTime>("PublicationDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Remaining")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -74,7 +74,7 @@ namespace BooksAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.Borrowing", b =>
@@ -102,7 +102,7 @@ namespace BooksAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Borrowings");
+                    b.ToTable("Borrowings", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.Department", b =>
@@ -129,7 +129,7 @@ namespace BooksAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.Edition", b =>
@@ -158,7 +158,7 @@ namespace BooksAPI.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Editions");
+                    b.ToTable("Editions", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.User", b =>
@@ -182,7 +182,7 @@ namespace BooksAPI.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("AuthorBook", b =>
@@ -197,7 +197,7 @@ namespace BooksAPI.Migrations
 
                     b.HasIndex("BooksId");
 
-                    b.ToTable("AuthorBook");
+                    b.ToTable("AuthorBook", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.Borrowing", b =>

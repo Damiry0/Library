@@ -16,7 +16,7 @@ public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand>
     public async Task Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
         var book = Book.Create(request.Title, request.PublicationDate, request.Isbn, request.Pages, request.Amount,
-            request.Description, request.Authors, request.Editions);
+            request.Description, new List<Author>(), new List<Edition>());
 
         await _context.Books.AddAsync(book, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

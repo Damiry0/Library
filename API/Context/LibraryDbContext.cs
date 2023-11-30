@@ -28,13 +28,9 @@ public class LibraryDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Book>()
-            .HasMany<Author>(s => s.Authors)
-            .WithMany(c => c.Books);
-
-        modelBuilder.Entity<Book>()
-            .HasMany<Edition>(s => s.Editions)
-            .WithOne(s => s.Book);
+        modelBuilder.Entity<Author>()
+            .HasMany(x => x.Books)
+            .WithMany(x => x.Authors);
 
         modelBuilder.Entity<Department>()
             .HasMany<User>(s => s.Users)

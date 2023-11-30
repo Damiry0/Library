@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace API.Models;
 
-public sealed class Book : Entity
+public class Book : Entity
 {
     public string Title { get; private set; }
     public DateTime PublicationDate { get; private set; }
@@ -26,7 +26,7 @@ public sealed class Book : Entity
         return new Book(title, publicationDate, isbn, pages, amount, description, authors, editions);
     }
 
-    private Book()
+    public Book()
     {
         // EF
     }
@@ -69,8 +69,6 @@ public sealed class Book : Entity
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.Pages).NotEmpty();
             RuleFor(x => x.Isbn).NotEmpty();
-            RuleFor(x => x.Editions).NotEmpty();
-            RuleFor(x => x.Authors).NotEmpty();
         }
     }
 }

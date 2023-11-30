@@ -7,6 +7,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/books")]
+[Produces("application/json")]
 public class BooksController : Controller
 {
     private readonly IMediator _mediator;
@@ -36,7 +37,7 @@ public class BooksController : Controller
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post(CreateBookCommand command)
+    public async Task<IActionResult> Post([FromBody] CreateBookCommand command)
     {
         await _mediator.Send(command);
         return NoContent();
