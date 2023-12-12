@@ -12,8 +12,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<LibraryMsSQLDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQL")));
 
+var mySQLConnectionString = builder.Configuration.GetConnectionString("MsSQL");
 builder.Services.AddDbContext<LibraryMySQLDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MySQL")));
+    options.UseMySql(mySQLConnectionString, ServerVersion.AutoDetect(mySQLConnectionString)));
 
 
 var app = builder.Build();
