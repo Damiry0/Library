@@ -22,8 +22,7 @@ public class LibraryMySQLDbContext : DbContext
             .Build()
             .GetConnectionString("MySQL");
 
-        optionsBuilder.UseSqlServer(connectionString,
-            options => { options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null); });
+        optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         optionsBuilder.UseMySqlTriggers();
     }
