@@ -6,9 +6,9 @@ namespace BooksAPI.Command;
 
 public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand>
 {
-    private readonly LibraryDbContext _context;
+    private readonly LibraryMsSQLDbContext _context;
 
-    public CreateBookCommandHandler(LibraryDbContext context)
+    public CreateBookCommandHandler(LibraryMsSQLDbContext context)
     {
         _context = context;
     }

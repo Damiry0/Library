@@ -6,9 +6,9 @@ namespace BooksAPI.Command;
 
 public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand>
 {
-    private readonly LibraryDbContext _context;
+    private readonly LibraryMsSQLDbContext _context;
 
-    public DeleteBookCommandHandler(LibraryDbContext context)
+    public DeleteBookCommandHandler(LibraryMsSQLDbContext context)
     {
         _context = context;
     }

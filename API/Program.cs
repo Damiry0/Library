@@ -9,8 +9,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<LibraryDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddDbContext<LibraryMsSQLDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQL")));
+
+builder.Services.AddDbContext<LibraryMySQLDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MySQL")));
 
 
 var app = builder.Build();

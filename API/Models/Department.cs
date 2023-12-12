@@ -12,12 +12,12 @@ public class Department : Entity
     private readonly List<User> _users = new();
     public IReadOnlyCollection<User> Users => _users;
 
-    public Department()
+    protected Department()
     {
         // EF
     }
 
-    public Department(string name, string adrress, string email, string phone)
+    protected Department(string name, string adrress, string email, string phone)
     {
         Name = name;
         Adrress = adrress;

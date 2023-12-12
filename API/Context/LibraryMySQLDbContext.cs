@@ -1,15 +1,16 @@
-﻿using API.Models;
+using API.Models;
+using Laraue.EfCoreTriggers.MySql.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Context;
 
-public class LibraryDbContext : DbContext
+public class LibraryMySQLDbContext : DbContext
 {
-    public LibraryDbContext()
+    public LibraryMySQLDbContext()
     {
     }
 
-    public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
+    public LibraryMySQLDbContext(DbContextOptions<LibraryMySQLDbContext> options)
         : base(options)
     {
     }
@@ -19,11 +20,12 @@ public class LibraryDbContext : DbContext
         var connectionString = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", false, true)
             .Build()
-            .GetConnectionString("Default");
+            .GetConnectionString("MySQL");
 
         optionsBuilder.UseSqlServer(connectionString,
             options => { options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null); });
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        optionsBuilder.UseMySqlTriggers();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,8 +39,7 @@ public class LibraryDbContext : DbContext
             .WithOne(c => c.Department)
             .OnDelete(DeleteBehavior.NoAction);
 
-
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMySQLDbContext).Assembly);
     }
 
     public virtual DbSet<Author> Authors { get; set; }

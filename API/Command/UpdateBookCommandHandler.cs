@@ -7,9 +7,9 @@ namespace BooksAPI.Command;
 
 public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand>
 {
-    private readonly LibraryDbContext _context;
+    private readonly LibraryMsSQLDbContext _context;
 
-    public UpdateBookCommandHandler(LibraryDbContext context)
+    public UpdateBookCommandHandler(LibraryMsSQLDbContext context)
     {
         _context = context;
     }

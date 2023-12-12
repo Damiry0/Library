@@ -10,16 +10,19 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.8.1"/>
-    <PackageReference Include="MediatR" Version="12.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
+    <PackageReference Include="Laraue.EfCoreTriggers.Common" Version="8.0.0"/>
+    <PackageReference Include="Laraue.EfCoreTriggers.MySql" Version="8.0.0"/>
+    <PackageReference Include="Laraue.EfCoreTriggers.SqlServer" Version="8.0.0"/>
+    <PackageReference Include="MediatR" Version="12.1.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -40,6 +43,10 @@
     <Compile Remove="Query\GetEditionQuery.cs"/>
     <Compile Remove="Query\GetEditionsQuery.cs"/>
     <Compile Remove="Command\UpdateEditionCommand.cs"/>
+    <Compile Remove="Migrations\20231211222421_TableSplittingTest.cs"/>
+    <Compile Remove="Migrations\20231211222421_TableSplittingTest.Designer.cs"/>
+    <Compile Remove="Models\WitDepartment.cs"/>
+    <Compile Remove="Models\ChemistryDepartment.cs"/>
   </ItemGroup>
 
 </Project>

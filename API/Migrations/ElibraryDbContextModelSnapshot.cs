@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BooksAPI.Migrations
 {
-    [DbContext(typeof(LibraryDbContext))]
+    [DbContext(typeof(LibraryMsSQLDbContext))]
     partial class ElibraryDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -42,7 +42,7 @@ namespace BooksAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors", (string)null);
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("API.Models.Book", b =>
@@ -74,7 +74,7 @@ namespace BooksAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("API.Models.Borrowing", b =>
@@ -102,7 +102,7 @@ namespace BooksAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Borrowings", (string)null);
+                    b.ToTable("Borrowings");
                 });
 
             modelBuilder.Entity("API.Models.Department", b =>
@@ -129,7 +129,7 @@ namespace BooksAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments", (string)null);
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("API.Models.Edition", b =>
@@ -158,7 +158,7 @@ namespace BooksAPI.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Editions", (string)null);
+                    b.ToTable("Editions");
                 });
 
             modelBuilder.Entity("API.Models.User", b =>
@@ -170,6 +170,10 @@ namespace BooksAPI.Migrations
                     b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -178,11 +182,15 @@ namespace BooksAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StudentNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AuthorBook", b =>
@@ -197,7 +205,7 @@ namespace BooksAPI.Migrations
 
                     b.HasIndex("BooksId");
 
-                    b.ToTable("AuthorBook", (string)null);
+                    b.ToTable("AuthorBook");
                 });
 
             modelBuilder.Entity("API.Models.Borrowing", b =>

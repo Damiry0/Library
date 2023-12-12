@@ -7,9 +7,9 @@ namespace BooksAPI.Query;
 
 public class GetBookQueryHandler : IRequestHandler<GetBookQuery, BookDto>
 {
-    private readonly LibraryDbContext _context;
+    private readonly LibraryMsSQLDbContext _context;
 
-    public GetBookQueryHandler(LibraryDbContext context)
+    public GetBookQueryHandler(LibraryMsSQLDbContext context)
     {
         _context = context;
     }
