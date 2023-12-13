@@ -6,24 +6,23 @@ namespace BooksAPI.Command;
 
 public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand>
 {
-    private readonly LibraryMsSQLDbContext _context;
+    private readonly LibraryMsSQLDbContext _contextMSSQL;
+    private readonly LibraryMySQLDbContext _contextMySQL;
 
-    public DeleteBookCommandHandler(LibraryMsSQLDbContext context)
+    public DeleteBookCommandHandler(LibraryMsSQLDbContext contextMssql, LibraryMySQLDbContext contextMySql)
     {
-        _context = context;
+        _contextMSSQL = contextMssql;
+        _contextMySQL = contextMySql;
     }
 
     public async Task Handle(DeleteBookCommand request, CancellationToken cancellationToken)
     {
-        var book = await _context.Books.Where(x => x.Id == request.Id)
+        var book = await _contextMSSQL.Books.Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
         if (book is null)
         {
             throw new Exception("Book cannot be null");
         }
-
-        _context.Remove(book);
-        _context.SaveChangesAsync(cancellationToken);
     }
 }

@@ -28,19 +28,4 @@
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Command\CreateEditionCommandHandler.cs" />
-    <Compile Remove="Command\CreateEditionCommand.cs" />
-    <Compile Remove="Command\DeleteEditionCommand.cs" />
-    <Compile Remove="Controllers\EditionController.cs" />
-    <Compile Remove="Query\GetEditionQuery.cs" />
-    <Compile Remove="Query\GetEditionsQuery.cs" />
-    <Compile Remove="Command\UpdateEditionCommand.cs" />
-    <Compile Remove="Migrations\20231211222421_TableSplittingTest.cs" />
-    <Compile Remove="Migrations\20231211222421_TableSplittingTest.Designer.cs" />
-    <Compile Remove="Models\WitDepartment.cs" />
-    <Compile Remove="Models\ChemistryDepartment.cs" />
-  </ItemGroup>
-
 </Project>
