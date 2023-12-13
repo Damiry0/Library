@@ -26,7 +26,7 @@ public class Book : Entity
         return new Book(title, publicationDate, isbn, pages, amount, description, authors, editions);
     }
 
-    public Book()
+    private Book()
     {
         // EF
     }

@@ -19,6 +19,7 @@ public class Edition : Entity
         return new Edition(book, department, borrowing);
     }
 
+
     public Edition(Book book, Department department, Borrowing borrowing)
     {
         Status = Status.Available;
