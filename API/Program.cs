@@ -1,5 +1,6 @@
 using System.Reflection;
 using API.Context;
+using API.Context.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,8 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Get
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddDbContext<LibraryMsSQLDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQL")));
