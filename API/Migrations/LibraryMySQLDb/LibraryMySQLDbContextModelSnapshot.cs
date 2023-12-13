@@ -29,6 +29,9 @@ namespace BooksAPI.Migrations.LibraryMySQLDb
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<Guid?>("BookId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -38,6 +41,8 @@ namespace BooksAPI.Migrations.LibraryMySQLDb
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("Authors");
                 });
@@ -193,19 +198,11 @@ namespace BooksAPI.Migrations.LibraryMySQLDb
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AuthorBook", b =>
+            modelBuilder.Entity("API.Models.Author", b =>
                 {
-                    b.Property<Guid>("AuthorsId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("BooksId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("AuthorsId", "BooksId");
-
-                    b.HasIndex("BooksId");
-
-                    b.ToTable("AuthorBook");
+                    b.HasOne("API.Models.Book", null)
+                        .WithMany("Authors")
+                        .HasForeignKey("BookId");
                 });
 
             modelBuilder.Entity("API.Models.Borrowing", b =>
@@ -249,42 +246,24 @@ namespace BooksAPI.Migrations.LibraryMySQLDb
             modelBuilder.Entity("API.Models.User", b =>
                 {
                     b.HasOne("API.Models.Department", "Department")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("AuthorBook", b =>
-                {
-                    b.HasOne("API.Models.Author", null)
-                        .WithMany()
-                        .HasForeignKey("AuthorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Models.Book", null)
-                        .WithMany()
-                        .HasForeignKey("BooksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("API.Models.Book", b =>
                 {
+                    b.Navigation("Authors");
+
                     b.Navigation("Editions");
                 });
 
             modelBuilder.Entity("API.Models.Borrowing", b =>
                 {
                     b.Navigation("Editions");
-                });
-
-            modelBuilder.Entity("API.Models.Department", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("API.Models.User", b =>

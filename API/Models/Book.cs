@@ -26,7 +26,7 @@ public class Book : Entity
         return new Book(title, publicationDate, isbn, pages, amount, description, authors, editions);
     }
 
-    private Book()
+    public Book()
     {
         // EF
     }
@@ -43,7 +43,7 @@ public class Book : Entity
         _authors = authors.ToList();
         _editions = editions.ToList();
 
-        Validate();
+        //Validate();
     }
 
     private void Validate()
@@ -60,15 +60,15 @@ public class Book : Entity
     {
         public BookValidator()
         {
-            RuleFor(x => x.Title)
-                .NotEmpty()
-                .MaximumLength(50);
-
-            RuleFor(x => x.PublicationDate).NotEmpty();
-            RuleFor(x => x.Amount).NotEmpty();
-            RuleFor(x => x.Description).NotEmpty();
-            RuleFor(x => x.Pages).NotEmpty();
-            RuleFor(x => x.Isbn).NotEmpty();
+            // RuleFor(x => x.Title)
+            //     .NotEmpty()
+            //     .MaximumLength(50);
+            //
+            // RuleFor(x => x.PublicationDate).NotEmpty();
+            // RuleFor(x => x.Amount).NotEmpty();
+            // RuleFor(x => x.Description).NotEmpty();
+            // RuleFor(x => x.Pages).NotEmpty();
+            // RuleFor(x => x.Isbn).NotEmpty();
         }
     }
 }

@@ -29,15 +29,6 @@ public class LibraryMySQLDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Author>()
-            .HasMany(x => x.Books)
-            .WithMany(x => x.Authors);
-
-        modelBuilder.Entity<Department>()
-            .HasMany<User>(s => s.Users)
-            .WithOne(c => c.Department)
-            .OnDelete(DeleteBehavior.NoAction);
-
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMySQLDbContext).Assembly);
     }
 

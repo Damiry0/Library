@@ -11,11 +11,9 @@ public class Department : Entity
     public string Phone { get; set; }
 
     public DataCenter DataCenter { get; set; }
+    
 
-    private readonly List<User> _users = new();
-    public IReadOnlyCollection<User> Users => _users;
-
-    private Department()
+    public Department()
     {
         // EF
     }

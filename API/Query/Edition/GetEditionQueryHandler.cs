@@ -16,9 +16,9 @@ public class GetEditionQueryHandler : IRequestHandler<GetEditionQuery, EditionDt
 
     public async Task<EditionDto> Handle(GetEditionQuery request, CancellationToken cancellationToken)
     {
-        var edition = await _editionRepository.GetAllAsNoTracking().Where(x => x.Id == request.editionId)
+        var edition =  _editionRepository.GetAllAsNoTracking().Where(x => x.Id == request.editionId)
             .Select(x => new EditionDto())
-            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            .FirstOrDefault();
 
         return edition;
     }

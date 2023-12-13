@@ -30,15 +30,10 @@ public class LibraryMsSQLDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Author>()
-            .HasMany(x => x.Books)
-            .WithMany(x => x.Authors);
-
         modelBuilder.Entity<Department>()
-            .HasMany<User>(s => s.Users)
+            .HasMany<User>()
             .WithOne(c => c.Department)
             .OnDelete(DeleteBehavior.NoAction);
-
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMsSQLDbContext).Assembly);
     }

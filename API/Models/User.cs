@@ -13,7 +13,7 @@ public class User : Entity
     public Department Department { get; set; }
 
     private readonly List<Borrowing> _borrowings = new();
-    public List<Borrowing> Borrowings => _borrowings;
+    public IEnumerable<Borrowing> Borrowings => _borrowings;
 
 
     public User()

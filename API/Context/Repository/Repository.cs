@@ -19,9 +19,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
         return _contextMSSQL.Set<TEntity>().Union(_contextMySQL.Set<TEntity>());
     }
 
-    IQueryable<TEntity> IRepository<TEntity>.GetAllAsNoTracking()
+    IEnumerable<TEntity> IRepository<TEntity>.GetAllAsNoTracking()
     {
-        return _contextMSSQL.Set<TEntity>().Union(_contextMySQL.Set<TEntity>().AsNoTracking()).AsNoTracking();
+        var mssql = _contextMSSQL.Set<TEntity>().AsNoTracking().ToList();
+        var mysql = _contextMySQL.Set<TEntity>().AsNoTracking().ToList();
+        return mysql.Union(mssql);
     }
 
     public async Task AddAsync(TEntity entity, DataCenter? dataCenter)
