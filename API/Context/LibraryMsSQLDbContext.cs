@@ -14,6 +14,7 @@ public class LibraryMsSQLDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.LogTo(Console.WriteLine);
         var connectionString = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", false, true)
             .Build()

@@ -5,26 +5,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Context;
 
-public class LibraryMySQLDbContext : DbContext
+public class LibraryOracleDbContext : DbContext
 {
-    public LibraryMySQLDbContext()
+    public LibraryOracleDbContext()
     {
     }
 
-    public LibraryMySQLDbContext(DbContextOptions<LibraryMySQLDbContext> options)
+    public LibraryOracleDbContext(DbContextOptions<LibraryOracleDbContext> options)
         : base(options)
     {
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.LogTo(Console.WriteLine);
         var connectionString = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", false, true)
             .Build()
-            .GetConnectionString("MySQL");
+            .GetConnectionString("Oracle");
         
-        optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+        optionsBuilder.UseOracle("User Id=system;Password=yourStrongPassword123;DATA SOURCE=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=192.168.0.101)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));");
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         optionsBuilder.UseTriggers(triggerOptions =>
         {
@@ -35,7 +34,7 @@ public class LibraryMySQLDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)      
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMySQLDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryOracleDbContext).Assembly);
     }
 
     public virtual DbSet<Author> Authors { get; set; }
