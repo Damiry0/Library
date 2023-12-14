@@ -1,4 +1,5 @@
-﻿using API.Context;
+﻿using System.Text.Json.Serialization;
+using API.Context;
 using BooksAPI.Enums;
 
 namespace API.Models;
@@ -12,12 +13,12 @@ public class Department : Entity
 
     public DataCenter DataCenter { get; private set; }
     
-
     private Department()
     {
         // EF
     }
-
+    
+    [JsonConstructor]
     private Department(string name, string address, string email, string phone, DataCenter dataCenter)
     {
         Name = name;

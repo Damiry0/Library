@@ -78,4 +78,21 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
                 break;
         }
     }
+
+    public void Attach(TEntity entity, DataCenter? dataCenter)
+    {
+        switch (dataCenter)
+        {
+            case DataCenter.MsSql:
+                 _contextMSSQL.Attach(entity);
+                break;
+            case DataCenter.MySql:
+                _contextMySQL.Attach(entity);
+                break;
+            case null:
+                _contextMSSQL.Attach(entity);
+                _contextMySQL.Attach(entity);
+                break;
+        }
+    }
 }

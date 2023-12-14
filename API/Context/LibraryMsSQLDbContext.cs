@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using BooksAPI.Triggers;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Context;
@@ -21,7 +22,11 @@ public class LibraryMsSQLDbContext : DbContext
         optionsBuilder.UseSqlServer(connectionString,
             options => { options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null); });
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-        optionsBuilder.UseTriggers();
+        optionsBuilder.UseTriggers(triggerOptions =>
+        {
+            triggerOptions.AddTrigger<BlockChangeUserNameTrigger>();
+            
+        });
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

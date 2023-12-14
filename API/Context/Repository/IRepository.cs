@@ -9,4 +9,5 @@ public interface IRepository<TEntity> where TEntity : class
     Task AddAsync(TEntity entity, DataCenter? dataCenter);
     void Delete(TEntity entity, DataCenter? dataCenter);
     Task SaveAsync(DataCenter? dataCenter);
+    void Attach(TEntity entity, DataCenter? dataCenter);
 }
