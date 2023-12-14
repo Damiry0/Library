@@ -1,5 +1,4 @@
 ﻿using API.Models;
-using Laraue.EfCoreTriggers.SqlServer.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Context;
@@ -22,7 +21,7 @@ public class LibraryMsSQLDbContext : DbContext
         optionsBuilder.UseSqlServer(connectionString,
             options => { options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null); });
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-        optionsBuilder.UseSqlServerTriggers();
+        optionsBuilder.UseTriggers();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

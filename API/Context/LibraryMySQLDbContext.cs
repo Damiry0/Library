@@ -1,5 +1,6 @@
+using System;
 using API.Models;
-using Laraue.EfCoreTriggers.MySql.Extensions;
+using BooksAPI.Triggers;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Context;
@@ -21,13 +22,17 @@ public class LibraryMySQLDbContext : DbContext
             .AddJsonFile("appsettings.json", false, true)
             .Build()
             .GetConnectionString("MySQL");
-
+        
         optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-        optionsBuilder.UseMySqlTriggers();
+        optionsBuilder.UseTriggers(triggerOptions =>
+        {
+            triggerOptions.AddTrigger<BlockChangeUserNameTrigger>();
+            
+        });
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)      
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMySQLDbContext).Assembly);
     }
