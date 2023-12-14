@@ -7,23 +7,29 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 {
     private readonly LibraryMsSQLDbContext _contextMSSQL;
     private readonly LibraryMySQLDbContext _contextMySQL;
+    private readonly LibraryOracleDbContext _contextOracle;
 
-    public Repository(LibraryMsSQLDbContext contextMssql, LibraryMySQLDbContext contextMySql)
+    public Repository(LibraryMsSQLDbContext contextMssql, LibraryMySQLDbContext contextMySql, LibraryOracleDbContext contextOracle)
     {
         _contextMSSQL = contextMssql;
         _contextMySQL = contextMySql;
+        _contextOracle = contextOracle;
     }
 
-    IQueryable<TEntity> IRepository<TEntity>.GetAll()
+    IEnumerable<TEntity> IRepository<TEntity>.GetAll()
     {
-        return _contextMSSQL.Set<TEntity>().Union(_contextMySQL.Set<TEntity>());
+        var mssql = _contextMSSQL.Set<TEntity>().AsTracking().AsEnumerable();
+        var mysql = _contextMySQL.Set<TEntity>().AsTracking().AsEnumerable();
+        var oracle = _contextOracle.Set<TEntity>().AsTracking().AsEnumerable();
+        return mysql.Union(mssql).Union(oracle);
     }
 
     IEnumerable<TEntity> IRepository<TEntity>.GetAllAsNoTracking()
     {
-        var mssql = _contextMSSQL.Set<TEntity>().AsNoTracking().ToList();
-        var mysql = _contextMySQL.Set<TEntity>().AsNoTracking().ToList();
-        return mysql.Union(mssql);
+        var mssql = _contextMSSQL.Set<TEntity>().AsNoTracking().AsEnumerable();
+        var mysql = _contextMySQL.Set<TEntity>().AsNoTracking().AsEnumerable();
+        var oracle = _contextOracle.Set<TEntity>().AsTracking().AsEnumerable();
+        return mysql.Union(mssql).Union(oracle);
     }
 
     public async Task AddAsync(TEntity entity, DataCenter? dataCenter)
@@ -36,9 +42,13 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
             case DataCenter.MySql:
                 await _contextMySQL.Set<TEntity>().AddAsync(entity);
                 break;
+            case DataCenter.Oracle:
+                await _contextOracle.Set<TEntity>().AddAsync(entity);
+                break;
             case null:
                 await _contextMSSQL.Set<TEntity>().AddAsync(entity);
                 await _contextMySQL.Set<TEntity>().AddAsync(entity);
+                await _contextOracle.Set<TEntity>().AddAsync(entity);
                 break;
         }
     }
@@ -53,17 +63,19 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
             case DataCenter.MySql:
                 _contextMySQL.Remove(entity);
                 break;
+            case DataCenter.Oracle:
+                _contextOracle.Remove(entity);
+                break;
             case null:
                 _contextMSSQL.Remove(entity);
                 _contextMySQL.Remove(entity);
+                _contextOracle.Remove(entity);
                 break;
         }
     }
 
     public async Task SaveAsync(DataCenter? dataCenter)
     {
-        _contextMSSQL.ChangeTracker.DetectChanges();
-        Console.WriteLine(_contextMSSQL.ChangeTracker.DebugView.LongView);
         switch (dataCenter)
         {
             case DataCenter.MsSql:
@@ -72,9 +84,13 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
             case DataCenter.MySql:
                 await _contextMySQL.SaveChangesAsync();
                 break;
+            case DataCenter.Oracle:
+                await _contextOracle.SaveChangesAsync();
+                break;
             case null:
                 await _contextMSSQL.SaveChangesAsync();
                 await _contextMySQL.SaveChangesAsync();
+                await _contextOracle.SaveChangesAsync();
                 break;
         }
     }
@@ -89,9 +105,13 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
             case DataCenter.MySql:
                 _contextMySQL.Attach(entity);
                 break;
+            case DataCenter.Oracle:
+                _contextOracle.Attach(entity);
+                break;
             case null:
                 _contextMSSQL.Attach(entity);
                 _contextMySQL.Attach(entity);
+                _contextOracle.Attach(entity);
                 break;
         }
     }
