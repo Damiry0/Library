@@ -13,7 +13,7 @@ public class Department : Entity
     public DataCenter DataCenter { get; set; }
     
 
-    public Department()
+    private Department()
     {
         // EF
     }

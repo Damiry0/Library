@@ -15,9 +15,6 @@ public class Book : Entity
     private readonly List<Author> _authors = new();
     public IReadOnlyCollection<Author> Authors => _authors;
 
-    private readonly List<Edition> _editions = new();
-    public IReadOnlyCollection<Edition> Editions => _editions;
-
 
     public static Book Create(string title, DateTime publicationDate, string isbn, int pages, int amount,
         string description,
@@ -41,7 +38,6 @@ public class Book : Entity
         Amount = amount;
         Description = description;
         _authors = authors as List<Author> ?? new List<Author>();
-        _editions = editions as List<Edition> ?? new List<Edition>();
 
         //Validate();
     }

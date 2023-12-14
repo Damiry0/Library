@@ -217,7 +217,7 @@ namespace BooksAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("API.Models.User", "User")
-                        .WithMany("Borrowings")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -230,7 +230,7 @@ namespace BooksAPI.Migrations
             modelBuilder.Entity("API.Models.Edition", b =>
                 {
                     b.HasOne("API.Models.Book", "Book")
-                        .WithMany("Editions")
+                        .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -260,13 +260,6 @@ namespace BooksAPI.Migrations
             modelBuilder.Entity("API.Models.Book", b =>
                 {
                     b.Navigation("Authors");
-
-                    b.Navigation("Editions");
-                });
-
-            modelBuilder.Entity("API.Models.User", b =>
-                {
-                    b.Navigation("Borrowings");
                 });
 #pragma warning restore 612, 618
         }
