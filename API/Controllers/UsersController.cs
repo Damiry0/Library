@@ -33,4 +33,13 @@ public class UsersController : Controller
         await _mediator.Send(command);
         return NoContent();
     }
+    
+    [HttpPut("{userId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Put([FromBody] UpdateUserCommand user, Guid userId)
+    {
+        await _mediator.Send(user with { UserId = userId });
+        return NoContent();
+    }
 }

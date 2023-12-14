@@ -33,4 +33,12 @@ public class User : Entity
         return new User(firstName, lastName, email, studentNumber, department);
     }
     
+    public void Update(string firstName, string lastName, string email, string studentNumber)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        StudentNumber = studentNumber;
+    }
+    
 }
