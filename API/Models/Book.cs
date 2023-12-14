@@ -40,8 +40,8 @@ public class Book : Entity
         Pages = pages;
         Amount = amount;
         Description = description;
-        _authors = authors.ToList();
-        _editions = editions.ToList();
+        _authors = authors as List<Author> ?? new List<Author>();
+        _editions = editions as List<Edition> ?? new List<Edition>();
 
         //Validate();
     }

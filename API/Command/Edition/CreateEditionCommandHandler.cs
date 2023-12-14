@@ -10,10 +10,10 @@ public class CreateEditionCommandHandler : IRequestHandler<CreateEditionCommand>
 {
     private readonly IRepository<API.Models.Edition> _editionRepository;
     private readonly IRepository<Book> _bookRepository;
-    private readonly IRepository<Department> _departmentRepository;
+    private readonly IRepository<API.Models.Department> _departmentRepository;
 
     public CreateEditionCommandHandler(IRepository<API.Models.Edition> editionRepository,
-        IRepository<Book> bookRepository, IRepository<Department> departmentRepository)
+        IRepository<Book> bookRepository, IRepository<API.Models.Department> departmentRepository)
     {
         _editionRepository = editionRepository;
         _bookRepository = bookRepository;
@@ -40,7 +40,7 @@ public class CreateEditionCommandHandler : IRequestHandler<CreateEditionCommand>
                 request.BookDto.Description, null, null);
         }
 
-        var edition = API.Models.Edition.Create(book, department, null);
+        var edition = API.Models.Edition.Create(book, department);
 
         await _editionRepository.AddAsync(edition, edition.Department.DataCenter);
         await _editionRepository.SaveAsync(edition.Department.DataCenter);

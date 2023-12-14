@@ -18,16 +18,17 @@ public class Department : Entity
         // EF
     }
 
-    private Department(string name, string address, string email, string phone)
+    private Department(string name, string address, string email, string phone, DataCenter dataCenter)
     {
         Name = name;
         Address = address;
         Email = email;
         Phone = phone;
+        DataCenter = dataCenter;
     }
 
-    public static Department Create(string name, string address, string email, string phone)
+    public static Department Create(string name, string address, string email, string phone, DataCenter dataCenter)
     {
-        return new Department(name, address, email, phone);
+        return new Department(name, address, email, phone, dataCenter);
     }
 }

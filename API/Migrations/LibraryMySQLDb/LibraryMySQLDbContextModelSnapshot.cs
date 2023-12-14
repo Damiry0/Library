@@ -91,16 +91,21 @@ namespace BooksAPI.Migrations.LibraryMySQLDb
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<Guid>("EditionId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsReturned")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EditionId");
 
                     b.HasIndex("UserId");
 
@@ -146,9 +151,6 @@ namespace BooksAPI.Migrations.LibraryMySQLDb
                     b.Property<Guid>("BookId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("BorrowingId")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("DepartmentId")
                         .HasColumnType("char(36)");
 
@@ -158,8 +160,6 @@ namespace BooksAPI.Migrations.LibraryMySQLDb
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
-
-                    b.HasIndex("BorrowingId");
 
                     b.HasIndex("DepartmentId");
 
@@ -207,11 +207,19 @@ namespace BooksAPI.Migrations.LibraryMySQLDb
 
             modelBuilder.Entity("API.Models.Borrowing", b =>
                 {
+                    b.HasOne("API.Models.Edition", "Edition")
+                        .WithMany()
+                        .HasForeignKey("EditionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("API.Models.User", "User")
                         .WithMany("Borrowings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Edition");
 
                     b.Navigation("User");
                 });
@@ -224,12 +232,6 @@ namespace BooksAPI.Migrations.LibraryMySQLDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Models.Borrowing", "Borrowing")
-                        .WithMany("Editions")
-                        .HasForeignKey("BorrowingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("API.Models.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
@@ -237,8 +239,6 @@ namespace BooksAPI.Migrations.LibraryMySQLDb
                         .IsRequired();
 
                     b.Navigation("Book");
-
-                    b.Navigation("Borrowing");
 
                     b.Navigation("Department");
                 });
@@ -258,11 +258,6 @@ namespace BooksAPI.Migrations.LibraryMySQLDb
                 {
                     b.Navigation("Authors");
 
-                    b.Navigation("Editions");
-                });
-
-            modelBuilder.Entity("API.Models.Borrowing", b =>
-                {
                     b.Navigation("Editions");
                 });
 

@@ -1,4 +1,5 @@
-﻿using API.Context;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using API.Context;
 
 namespace API.Models;
 

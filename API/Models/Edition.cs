@@ -7,24 +7,21 @@ public class Edition : Entity
     public Status Status { get; set; }
     public Book Book { get; set; }
     public Department Department { get; set; }
-    public Borrowing Borrowing { get; set; }
 
     public Edition()
     {
         // EF
     }
 
-    public static Edition Create(Book book, Department department, Borrowing borrowing)
+    public static Edition Create(Book book, Department department)
     {
-        return new Edition(book, department, borrowing);
+        return new Edition(book, department);
     }
 
-
-    public Edition(Book book, Department department, Borrowing borrowing)
+    public Edition(Book book, Department department)
     {
         Status = Status.Available;
         Book = book;
         Department = department;
-        Borrowing = borrowing;
     }
 }

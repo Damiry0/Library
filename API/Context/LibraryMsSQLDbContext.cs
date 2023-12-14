@@ -6,9 +6,6 @@ namespace API.Context;
 
 public class LibraryMsSQLDbContext : DbContext
 {
-    public LibraryMsSQLDbContext()
-    {
-    }
 
     public LibraryMsSQLDbContext(DbContextOptions<LibraryMsSQLDbContext> options)
         : base(options)

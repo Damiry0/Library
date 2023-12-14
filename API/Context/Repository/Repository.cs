@@ -36,7 +36,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
             case DataCenter.MySql:
                 await _contextMySQL.Set<TEntity>().AddAsync(entity);
                 break;
-            default:
+            case null:
                 await _contextMSSQL.Set<TEntity>().AddAsync(entity);
                 await _contextMySQL.Set<TEntity>().AddAsync(entity);
                 break;
@@ -53,7 +53,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
             case DataCenter.MySql:
                 _contextMySQL.Remove(entity);
                 break;
-            default:
+            case null:
                 _contextMSSQL.Remove(entity);
                 _contextMySQL.Remove(entity);
                 break;
@@ -62,6 +62,8 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
     public async Task SaveAsync(DataCenter? dataCenter)
     {
+        _contextMSSQL.ChangeTracker.DetectChanges();
+        Console.WriteLine(_contextMSSQL.ChangeTracker.DebugView.LongView);
         switch (dataCenter)
         {
             case DataCenter.MsSql:
@@ -70,7 +72,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
             case DataCenter.MySql:
                 await _contextMySQL.SaveChangesAsync();
                 break;
-            default:
+            case null:
                 await _contextMSSQL.SaveChangesAsync();
                 await _contextMySQL.SaveChangesAsync();
                 break;

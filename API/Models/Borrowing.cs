@@ -7,24 +7,28 @@ public class Borrowing : Entity
     public DateTime BorrowDate { get; set; }
     public DateTime? ReturnDate { get; set; }
     public DateTime DueDate { get; set; }
-    public bool Status { get; set; }
+    public bool IsReturned { get; set; }
 
     public User User { get; set; }
 
-    private readonly List<Edition> _editions = new();
-    public IReadOnlyCollection<Edition> Editions => _editions;
+    public Edition Edition { get; set; }
 
-    public Borrowing()
+    private Borrowing()
     {
         // EF
     }
 
-    public Borrowing(DateTime borrowDate, DateTime? returnDate, DateTime dueDate, bool status, User user)
+    private Borrowing(DateTime borrowDate, DateTime? returnDate, DateTime dueDate, bool isReturned, User user)
     {
         BorrowDate = borrowDate;
         ReturnDate = returnDate;
         DueDate = dueDate;
-        Status = status;
+        IsReturned = isReturned;
         User = user;
+    }
+    
+    public static Borrowing Create(DateTime borrowDate, DateTime? returnDate, DateTime dueDate, bool isReturned, User user)
+    {
+        return new Borrowing(borrowDate, returnDate, dueDate, isReturned, user);
     }
 }
