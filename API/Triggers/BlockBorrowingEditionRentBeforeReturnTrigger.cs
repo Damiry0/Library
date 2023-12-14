@@ -5,23 +5,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BooksAPI.Triggers
 {
-    public class BlockMultipleChangeStatusTrigger : IBeforeSaveTrigger<Borrowing>
+    public class BlockBorrowingEditionRentBeforeReturnTrigger : IBeforeSaveTrigger<Borrowing>
     {
         private readonly DbContext _applicationContext;
 
-        public BlockMultipleChangeStatusTrigger(DbContext applicationContext)
+        public BlockBorrowingEditionRentBeforeReturnTrigger(DbContext applicationContext)
         {
             _applicationContext = applicationContext;
         }
         public Task BeforeSave(ITriggerContext<Borrowing> context, CancellationToken cancellationToken)
         {
-            if (context.ChangeType == ChangeType.Modified)
+            if (context.ChangeType == ChangeType.Added)
             {
-                if (_applicationContext.ChangeTracker.Entries<Borrowing>().
-                        Count(e => e.State == EntityState.Modified) > 1)
+                if (context.Entity.Edition.Status == Status.Borrowed)
                 {
-                    throw new Exception("Cannot modify more than one record");
+                    throw new Exception("Cannot borrow borrowed edition");
                 }
+                
             }
             return Task.CompletedTask;
         }

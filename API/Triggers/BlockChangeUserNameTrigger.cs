@@ -12,7 +12,7 @@ namespace BooksAPI.Triggers
             {
                 if (context.UnmodifiedEntity?.FirstName != context.Entity.FirstName)
                 {
-                    throw new Exception("kupsko dupa");
+                    throw new Exception("Cannot modify user credentials");
                 }
             }
             return Task.CompletedTask;
