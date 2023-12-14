@@ -27,8 +27,10 @@ public class User : Entity
         Department = department;
     }
     
-    public static User Create(string firstName, string lastName, string email, string studentNumber, Department department)
+    public static User Create(string firstName, string lastName, string email, string studentNumber, 
+        Department department)
     {
         return new User(firstName, lastName, email, studentNumber, department);
     }
+    
 }

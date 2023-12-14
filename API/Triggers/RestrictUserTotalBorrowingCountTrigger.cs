@@ -1,3 +1,4 @@
+using API.Context;
 using API.Models;
 using EntityFrameworkCore.Triggered;
 using Microsoft.EntityFrameworkCore;
@@ -6,31 +7,22 @@ namespace BooksAPI.Triggers
 {
     public class RestrictUserTotalBorrowingCountTrigger : IBeforeSaveTrigger<Borrowing>
     {
-        private readonly DbContext _applicationContext;
+        private readonly LibraryMsSQLDbContext _applicationContext;
 
-        public RestrictUserTotalBorrowingCountTrigger(DbContext applicationContext)
+        public RestrictUserTotalBorrowingCountTrigger(LibraryMsSQLDbContext applicationContext)
         {
             _applicationContext = applicationContext;
         }
         public Task BeforeSave(ITriggerContext<Borrowing> context, CancellationToken cancellationToken)
         {
-            switch (context.ChangeType)
+            var userBorrowedCount = _applicationContext.Borrowings.Count(r =>
+                r.User.Id == context.Entity.User.Id && r.IsReturned == false);
+
+            if (context.ChangeType == ChangeType.Added)
             {
-                case ChangeType.Added:
+                if (userBorrowedCount >= 5)
                 {
-                    if (context.Entity.User.Borrowings.Count() > 5)
-                    {
-                        throw new Exception("Cannot have more than 5 borrows per user");
-                    }
-                    break;
-                }
-                case ChangeType.Modified:
-                {
-                    if (context.Entity.IsReturned)
-                    {
-                        context.Entity.User.Borrowings.Remove(context.Entity);
-                    }
-                    break;
+                    throw new Exception("Cannot have more than 5 borrows per user");   
                 }
             }
             return Task.CompletedTask;

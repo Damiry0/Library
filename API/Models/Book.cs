@@ -17,8 +17,7 @@ public class Book : Entity
 
 
     public static Book Create(string title, DateTime publicationDate, string isbn, int pages, int amount,
-        string description,
-        IEnumerable<Author> authors, IEnumerable<Edition> editions)
+        string description, IEnumerable<Author> authors, IEnumerable<Edition> editions)
     {
         return new Book(title, publicationDate, isbn, pages, amount, description, authors, editions);
     }
@@ -40,6 +39,16 @@ public class Book : Entity
         _authors = authors as List<Author> ?? new List<Author>();
 
         //Validate();
+    }
+
+    public void AddAmount()
+    {
+        Amount += 1;
+    }
+
+    public void ReduceAmount()
+    {
+        Amount -= 1;
     }
 
     private void Validate()

@@ -18,14 +18,14 @@ namespace BooksAPI.Triggers
             {
                 case ChangeType.Added:
                 {
-                    context.Entity.Edition.Status = Status.Borrowed;
+                    context.Entity.Edition.ChangeBookStatus(Status.Borrowed);
                     break;
                 }
                 case ChangeType.Modified:
                 {
                     if (context.Entity.IsReturned)
                     {
-                        context.Entity.Edition.Status = Status.Available;
+                        context.Entity.Edition.ChangeBookStatus(Status.Available);
                     }
                     break;
                 }

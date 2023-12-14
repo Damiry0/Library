@@ -18,12 +18,12 @@ namespace BooksAPI.Triggers
             {
                 case ChangeType.Added:
                 {
-                    context.Entity.Book.Editions.Add(context.Entity);
+                    context.Entity.Book.AddAmount();
                     break;
                 }
                 case ChangeType.Deleted:
                 {
-                    context.Entity.Book.Editions.Remove(context.Entity);
+                    context.Entity.Book.ReduceAmount();
                     break;
                 }
             }

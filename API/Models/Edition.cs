@@ -4,9 +4,9 @@ namespace API.Models;
 
 public class Edition : Entity
 {
-    public Status Status { get; set; }
-    public Book Book { get; set; }
-    public Department Department { get; set; }
+    public Status Status { get; private set; }
+    public Book Book { get; private set; }
+    public Department Department { get; private set; }
 
     public static Edition Create(Book book, Department department)
     {
@@ -24,4 +24,10 @@ public class Edition : Entity
         Book = book;
         Department = department;
     }
+
+    public void ChangeBookStatus(Status status)
+    {
+        Status = status;
+    }
+    
 }
