@@ -1,6 +1,6 @@
 using API.Context.Repository;
+using BooksAPI.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace BooksAPI.Command.Edition;
 
@@ -20,7 +20,7 @@ public class UpdateEditionCommandHandler : IRequestHandler<UpdateEditionCommand>
 
         if (edition is null)
         {
-            throw new Exception("Edition cannot be null");
+            throw new NotFoundException("Edition not found.");
         }
     }
 }

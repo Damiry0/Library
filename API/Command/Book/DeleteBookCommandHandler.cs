@@ -1,4 +1,5 @@
 ﻿using API.Context;
+using BooksAPI.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,7 @@ public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand>
 
         if (book is null)
         {
-            throw new Exception("Book cannot be null");
+            throw new NotFoundException("Book not found");
         }
     }
 }

@@ -1,6 +1,6 @@
 using API.Context.Repository;
+using BooksAPI.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace BooksAPI.Command.Edition;
 
@@ -15,12 +15,12 @@ public class DeleteEditionCommandHandler : IRequestHandler<DeleteEditionCommand>
 
     public async Task Handle(DeleteEditionCommand request, CancellationToken cancellationToken)
     {
-        var edition =  _editionRepository.GetAllAsNoTracking()
+        var edition = _editionRepository.GetAllAsNoTracking()
             .FirstOrDefault(x => x.Id == request.Id);
 
         if (edition is null)
         {
-            throw new Exception("Edition cannot be null");
+            throw new NotFoundException("Edition not found.");
         }
 
         _editionRepository.Delete(edition, edition.Department.DataCenter);

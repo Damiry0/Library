@@ -1,5 +1,6 @@
 ﻿using API.Context;
 using API.Models;
+using BooksAPI.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,7 @@ public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand>
 
         if (book is null)
         {
-            throw new Exception("Book cannot be null");
+            throw new NotFoundException("Book not found.");
         }
 
         book = Book.Create(request.Title, request.PublicationDate, request.Isbn, request.Pages, request.Amount,

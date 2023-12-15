@@ -1,8 +1,7 @@
 using API.Context.Repository;
 using API.Models;
-using BooksAPI.Dtos;
+using BooksAPI.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace BooksAPI.Command.Edition;
 
@@ -27,7 +26,7 @@ public class CreateEditionCommandHandler : IRequestHandler<CreateEditionCommand>
 
         if (department is null)
         {
-            throw new Exception("Department cannot be null");
+            throw new NotFoundException("Department not found.");
         }
 
         var book = _bookRepository.GetAllAsNoTracking()

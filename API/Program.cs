@@ -2,6 +2,7 @@ using System.Reflection;
 using API.Context;
 using API.Context.Repository;
 using BooksAPI.Authentication.Jwt;
+using BooksAPI.Exceptions.Filter;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,9 @@ builder.Services.AddDbContext<LibraryMySQLDbContext>(options =>
 builder.Services.AddDbContext<LibraryOracleDbContext>(options =>
     options.UseOracle(builder.Configuration.GetConnectionString("Oracle")));
 
+builder.Services.AddControllersWithViews(o => { o.Filters.Add<GlobalExceptionFilter>(); });
+
+// builder.Services.AddTransient<IJwtProvider, JwtProvider>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 builder.Services.ConfigureOptions<JwtOptionsSetup>();
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();

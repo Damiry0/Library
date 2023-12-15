@@ -14,10 +14,11 @@ public class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartmentCo
 
     public async Task Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
     {
-        var department = API.Models.Department.Create(request.DepartmentDto.Name, request.DepartmentDto.Address, request.DepartmentDto.Email, request.DepartmentDto.Phone, request.DepartmentDto.DataCenter);
-        
-        
-        await _departmentRepository.AddAsync(department,null);
-        await _departmentRepository.SaveAsync(null);
+        var department = API.Models.Department.Create(request.DepartmentDto.Name, request.DepartmentDto.Address,
+            request.DepartmentDto.Email, request.DepartmentDto.Phone, request.DepartmentDto.DataCenter);
+
+
+        await _departmentRepository.AddAsync(department, department.DataCenter);
+        await _departmentRepository.SaveAsync(department.DataCenter);
     }
 }
