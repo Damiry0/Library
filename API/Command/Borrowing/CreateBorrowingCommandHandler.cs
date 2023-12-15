@@ -1,3 +1,4 @@
+using API.Context;
 using API.Context.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -19,26 +20,26 @@ public class CreateBorrowingCommandHandler : IRequestHandler<CreateBorrowingComm
 
     public async Task Handle(CreateBorrowingCommand request, CancellationToken cancellationToken)
     {
-        // LAZY LOADING ISSUE, MUST BE INCLUDE
-        var user = _userRepository.GetAllAsNoTracking().FirstOrDefault
-            (x => x.Id == request.UserId);
+        var user = _userRepository.GetAllAsNoTracking()
+            .FirstOrDefault(x => x.Id == request.UserId);
+        
         if (user is null)
         {
-            throw new Exception("User object is null");
+            throw new Exception("User not found");
         }
         
-        var edition = _editionRepository.GetAllAsNoTracking().FirstOrDefault
-            (x => x.Id == request.EditionId);
+        var edition = _editionRepository.GetAllAsNoTracking()
+            .FirstOrDefault(x => x.Id == request.EditionId);
+        if (edition is null)
+        {
+            throw new Exception("Edition not found");
+        }
         
+        _editionRepository.Attach(edition, user.Department.DataCenter);
         _userRepository.Attach(user, user.Department.DataCenter);
 
         var borrowing = API.Models.Borrowing.Create(request.BorrowingDto.BorrowDate, request.BorrowingDto.ReturnDate, request.BorrowingDto.DueDate, 
             request.BorrowingDto.IsReturned, user, edition);
-        
-        if (borrowing is null)
-        {
-            throw new Exception("Borrowing object is null");
-        }
         
         await _borrowingRepository.AddAsync(borrowing, user.Department.DataCenter);
         await _borrowingRepository.SaveAsync(user.Department.DataCenter);

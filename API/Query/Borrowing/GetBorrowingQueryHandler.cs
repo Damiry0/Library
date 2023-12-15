@@ -8,13 +8,9 @@ namespace BooksAPI.Query.Borrowing;
 public class GetBorrowingsQueryHandler : IRequestHandler<GetBorrowingsQuery, IEnumerable<BorrowingDto>>
 {
     private readonly IRepository<API.Models.Borrowing> _borrowingRepository;
-    private readonly IRepository<API.Models.User> _userRepository;
-    private readonly IRepository<API.Models.Edition> _editionRepository;
 
-    public GetBorrowingsQueryHandler(IRepository<API.Models.User> userRepository, IRepository<API.Models.Edition> editionRepository, IRepository<API.Models.Borrowing> borrowingRepository)
+    public GetBorrowingsQueryHandler(IRepository<API.Models.Borrowing> borrowingRepository)
     {
-        _userRepository = userRepository;
-        _editionRepository = editionRepository;
         _borrowingRepository = borrowingRepository;
     }
 

@@ -34,6 +34,7 @@ public class LibraryOracleDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)      
     {
+        modelBuilder.Entity<User>().Navigation(e => e.Department).AutoInclude();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryOracleDbContext).Assembly);
     }
 

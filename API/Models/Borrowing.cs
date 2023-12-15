@@ -5,10 +5,10 @@ namespace API.Models;
 
 public class Borrowing : Entity
 {
-    public DateTime BorrowDate { get; private set; }
-    public DateTime? ReturnDate { get; private set; }
-    public DateTime DueDate { get; private set; }
-    public bool IsReturned { get; private set; }
+    public DateTime BorrowDate { get;  set; }
+    public DateTime? ReturnDate { get;  set; }
+    public DateTime DueDate { get;  set; }
+    public bool IsReturned { get;  set; }
 
     public User User { get; private set; }
 

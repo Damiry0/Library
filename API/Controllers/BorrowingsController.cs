@@ -21,8 +21,8 @@ public class BorrowingsController : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
-        await _mediator.Send(new GetBorrowingsQuery());
-        return Ok();
+        var query = await _mediator.Send(new GetBorrowingsQuery());
+        return Ok(query);
     }
     
     [HttpPost]

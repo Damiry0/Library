@@ -36,6 +36,8 @@ public class LibraryMsSQLDbContext : DbContext
             .HasMany<User>()
             .WithOne(c => c.Department)
             .OnDelete(DeleteBehavior.NoAction);
+        
+        modelBuilder.Entity<User>().Navigation(e => e.Department).AutoInclude();
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMsSQLDbContext).Assembly);
     }

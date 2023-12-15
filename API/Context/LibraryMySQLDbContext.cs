@@ -35,6 +35,7 @@ public class LibraryMySQLDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)      
     {
+        modelBuilder.Entity<User>().Navigation(e => e.Department).AutoInclude();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMySQLDbContext).Assembly);
     }
 
