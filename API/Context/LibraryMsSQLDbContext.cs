@@ -1,14 +1,11 @@
 ﻿using API.Models;
-using Laraue.EfCoreTriggers.SqlServer.Extensions;
+using BooksAPI.Triggers;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Context;
 
 public class LibraryMsSQLDbContext : DbContext
 {
-    public LibraryMsSQLDbContext()
-    {
-    }
 
     public LibraryMsSQLDbContext(DbContextOptions<LibraryMsSQLDbContext> options)
         : base(options)
@@ -17,6 +14,7 @@ public class LibraryMsSQLDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.LogTo(Console.WriteLine);
         var connectionString = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", false, true)
             .Build()
@@ -25,20 +23,21 @@ public class LibraryMsSQLDbContext : DbContext
         optionsBuilder.UseSqlServer(connectionString,
             options => { options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null); });
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-        optionsBuilder.UseSqlServerTriggers();
+        optionsBuilder.UseTriggers(triggerOptions =>
+        {
+            triggerOptions.AddTrigger<BlockChangeUserNameTrigger>();
+            
+        });
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Author>()
-            .HasMany(x => x.Books)
-            .WithMany(x => x.Authors);
-
         modelBuilder.Entity<Department>()
-            .HasMany<User>(s => s.Users)
+            .HasMany<User>()
             .WithOne(c => c.Department)
             .OnDelete(DeleteBehavior.NoAction);
-
+        
+        modelBuilder.Entity<User>().Navigation(e => e.Department).AutoInclude();
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMsSQLDbContext).Assembly);
     }

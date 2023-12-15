@@ -9,22 +9,23 @@ public sealed class Author : Entity
     public string LastName { get; private set; }
     public string Bio { get; private set; }
 
-
-    private readonly List<Book> _books = new();
-    public IReadOnlyCollection<Book> Books => _books;
-
     private Author(string firstName, string lastName, string bio)
     {
         FirstName = firstName;
         LastName = lastName;
         Bio = bio;
 
-        Validate();
+        //Validate();
     }
 
     public Author()
     {
         // EF
+    }
+    
+    public static Author Create(string firstName, string lastName, string bio)
+    {
+        return new Author(firstName, lastName, bio);
     }
 
     private void Validate()
@@ -41,9 +42,9 @@ public sealed class Author : Entity
     {
         public AuthorValidator()
         {
-            RuleFor(x => x.FirstName).NotEmpty().WithMessage("First name is required.");
-            RuleFor(x => x.LastName).NotEmpty().WithMessage("Last name is required.");
-            RuleFor(x => x.Bio).NotEmpty().WithMessage("Bio is required.");
+            // RuleFor(x => x.FirstName).NotEmpty().WithMessage("First name is required.");
+            // RuleFor(x => x.LastName).NotEmpty().WithMessage("Last name is required.");
+            // RuleFor(x => x.Bio).NotEmpty().WithMessage("Bio is required.");
         }
     }
 }

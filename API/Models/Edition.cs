@@ -4,27 +4,30 @@ namespace API.Models;
 
 public class Edition : Entity
 {
-    public Status Status { get; set; }
-    public Book Book { get; set; }
-    public Department Department { get; set; }
-    public Borrowing Borrowing { get; set; }
+    public Status Status { get; private set; }
+    public Book Book { get; private set; }
+    public Department Department { get; private set; }
 
-    public Edition()
+    public static Edition Create(Book book, Department department)
+    {
+        return new Edition(book, department);
+    }
+    
+    private Edition()
     {
         // EF
     }
 
-    public static Edition Create(Book book, Department department, Borrowing borrowing)
-    {
-        return new Edition(book, department, borrowing);
-    }
-
-
-    public Edition(Book book, Department department, Borrowing borrowing)
+    private Edition(Book book, Department department)
     {
         Status = Status.Available;
         Book = book;
         Department = department;
-        Borrowing = borrowing;
     }
+
+    public void ChangeBookStatus(Status status)
+    {
+        Status = status;
+    }
+    
 }

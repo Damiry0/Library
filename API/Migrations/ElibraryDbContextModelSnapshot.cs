@@ -17,7 +17,7 @@ namespace BooksAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -32,6 +32,9 @@ namespace BooksAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -41,6 +44,8 @@ namespace BooksAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("Authors");
                 });
@@ -89,16 +94,21 @@ namespace BooksAPI.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("EditionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsReturned")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EditionId");
 
                     b.HasIndex("UserId");
 
@@ -111,9 +121,12 @@ namespace BooksAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Adrress")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataCenter")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -141,9 +154,6 @@ namespace BooksAPI.Migrations
                     b.Property<Guid>("BookId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BorrowingId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
@@ -153,8 +163,6 @@ namespace BooksAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
-
-                    b.HasIndex("BorrowingId");
 
                     b.HasIndex("DepartmentId");
 
@@ -193,28 +201,28 @@ namespace BooksAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AuthorBook", b =>
+            modelBuilder.Entity("API.Models.Author", b =>
                 {
-                    b.Property<Guid>("AuthorsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BooksId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("AuthorsId", "BooksId");
-
-                    b.HasIndex("BooksId");
-
-                    b.ToTable("AuthorBook");
+                    b.HasOne("API.Models.Book", null)
+                        .WithMany("Authors")
+                        .HasForeignKey("BookId");
                 });
 
             modelBuilder.Entity("API.Models.Borrowing", b =>
                 {
+                    b.HasOne("API.Models.Edition", "Edition")
+                        .WithMany()
+                        .HasForeignKey("EditionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("API.Models.User", "User")
-                        .WithMany("Borrowings")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Edition");
 
                     b.Navigation("User");
                 });
@@ -222,14 +230,8 @@ namespace BooksAPI.Migrations
             modelBuilder.Entity("API.Models.Edition", b =>
                 {
                     b.HasOne("API.Models.Book", "Book")
-                        .WithMany("Editions")
+                        .WithMany()
                         .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Models.Borrowing", "Borrowing")
-                        .WithMany("Editions")
-                        .HasForeignKey("BorrowingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -241,15 +243,13 @@ namespace BooksAPI.Migrations
 
                     b.Navigation("Book");
 
-                    b.Navigation("Borrowing");
-
                     b.Navigation("Department");
                 });
 
             modelBuilder.Entity("API.Models.User", b =>
                 {
                     b.HasOne("API.Models.Department", "Department")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -257,39 +257,9 @@ namespace BooksAPI.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("AuthorBook", b =>
-                {
-                    b.HasOne("API.Models.Author", null)
-                        .WithMany()
-                        .HasForeignKey("AuthorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Models.Book", null)
-                        .WithMany()
-                        .HasForeignKey("BooksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("API.Models.Book", b =>
                 {
-                    b.Navigation("Editions");
-                });
-
-            modelBuilder.Entity("API.Models.Borrowing", b =>
-                {
-                    b.Navigation("Editions");
-                });
-
-            modelBuilder.Entity("API.Models.Department", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("API.Models.User", b =>
-                {
-                    b.Navigation("Borrowings");
+                    b.Navigation("Authors");
                 });
 #pragma warning restore 612, 618
         }

@@ -15,8 +15,8 @@ public class DeleteEditionCommandHandler : IRequestHandler<DeleteEditionCommand>
 
     public async Task Handle(DeleteEditionCommand request, CancellationToken cancellationToken)
     {
-        var edition = await _editionRepository.GetAllAsNoTracking().Where(x => x.Id == request.Id)
-            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+        var edition =  _editionRepository.GetAllAsNoTracking()
+            .FirstOrDefault(x => x.Id == request.Id);
 
         if (edition is null)
         {

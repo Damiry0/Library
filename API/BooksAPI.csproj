@@ -9,10 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFrameworkCore.Triggered" Version="3.2.2" />
+    <PackageReference Include="EntityFrameworkCore.Triggered.AspNetCore" Version="1.1.0" />
+    <PackageReference Include="EntityFrameworkCore.Triggered.Extensions" Version="3.2.2" />
+    <PackageReference Include="EntityFrameworkCore.Triggered.Transactions" Version="3.2.2" />
+    <PackageReference Include="EntityFrameworkCore.Triggered.Transactions.Abstractions" Version="3.2.2" />
     <PackageReference Include="FluentValidation" Version="11.8.1" />
-    <PackageReference Include="Laraue.EfCoreTriggers.Common" Version="8.0.0" />
-    <PackageReference Include="Laraue.EfCoreTriggers.MySql" Version="8.0.0" />
-    <PackageReference Include="Laraue.EfCoreTriggers.SqlServer" Version="8.0.0" />
     <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.0" />
@@ -21,11 +23,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="8.21.121" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\Oracle\" />
     <Folder Include="Models\" />
   </ItemGroup>
 </Project>

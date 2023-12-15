@@ -1,5 +1,6 @@
+using System;
 using API.Models;
-using Laraue.EfCoreTriggers.MySql.Extensions;
+using BooksAPI.Triggers;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Context;
@@ -17,27 +18,24 @@ public class LibraryMySQLDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.LogTo(Console.WriteLine);
         var connectionString = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", false, true)
             .Build()
             .GetConnectionString("MySQL");
-
+        
         optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-        optionsBuilder.UseMySqlTriggers();
+        optionsBuilder.UseTriggers(triggerOptions =>
+        {
+            triggerOptions.AddTrigger<BlockChangeUserNameTrigger>();
+            
+        });
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)      
     {
-        modelBuilder.Entity<Author>()
-            .HasMany(x => x.Books)
-            .WithMany(x => x.Authors);
-
-        modelBuilder.Entity<Department>()
-            .HasMany<User>(s => s.Users)
-            .WithOne(c => c.Department)
-            .OnDelete(DeleteBehavior.NoAction);
-
+        modelBuilder.Entity<User>().Navigation(e => e.Department).AutoInclude();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMySQLDbContext).Assembly);
     }
 

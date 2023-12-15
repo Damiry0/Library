@@ -19,6 +19,9 @@ var mySQLConnectionString = builder.Configuration.GetConnectionString("MySQL");
 builder.Services.AddDbContext<LibraryMySQLDbContext>(options =>
     options.UseMySql(mySQLConnectionString, ServerVersion.AutoDetect(mySQLConnectionString)));
 
+var oracleConnectionString = builder.Configuration.GetConnectionString("Oracle");
+builder.Services.AddDbContext<LibraryOracleDbContext>(options =>
+    options.UseOracle("User Id=system;Password=yourStrongPassword123;DATA SOURCE=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=192.168.0.101)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));"));
 
 var app = builder.Build();
 

@@ -22,16 +22,16 @@ public class EditionsController : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
-        await _mediator.Send(new GetEditionsQuery());
-        return Ok();
+        var query = await _mediator.Send(new GetEditionsQuery());
+        return Ok(query);
     }
 
     [HttpGet($"{{editionId:Guid}}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(Guid editionId)
     {
-        await _mediator.Send(new GetEditionQuery(editionId));
-        return Ok();
+        var query = await _mediator.Send(new GetEditionQuery(editionId));
+        return Ok(query);
     }
 
     [HttpPost]

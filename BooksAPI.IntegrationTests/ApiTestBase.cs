@@ -8,10 +8,5 @@ namespace BooksAPI.IntegrationTests;
 public class ApiTestBase
 {
     private SqliteConnection _connection;
-
-
-    protected virtual void AddTestServices(IServiceCollection services)
-    {
-        services.AddDbContext<LibraryDbContext>(options => { options.UseSqlServer(_connection); });
-    }
+    
 }

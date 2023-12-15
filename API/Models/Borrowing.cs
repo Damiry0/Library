@@ -1,30 +1,39 @@
-﻿using API.Context;
+﻿using System.Text.Json.Serialization;
+using API.Context;
 
 namespace API.Models;
 
 public class Borrowing : Entity
 {
-    public DateTime BorrowDate { get; set; }
-    public DateTime? ReturnDate { get; set; }
-    public DateTime DueDate { get; set; }
-    public bool Status { get; set; }
+    public DateTime BorrowDate { get;  set; }
+    public DateTime? ReturnDate { get;  set; }
+    public DateTime DueDate { get;  set; }
+    public bool IsReturned { get;  set; }
 
-    public User User { get; set; }
+    public User User { get; private set; }
 
-    private readonly List<Edition> _editions = new();
-    public IReadOnlyCollection<Edition> Editions => _editions;
+    public Edition Edition { get; private set; }
 
-    public Borrowing()
+    private Borrowing()
     {
         // EF
     }
 
-    public Borrowing(DateTime borrowDate, DateTime? returnDate, DateTime dueDate, bool status, User user)
+    [JsonConstructor]
+    private Borrowing(DateTime borrowDate, DateTime? returnDate, DateTime dueDate, bool isReturned, 
+        User user, Edition edition)
     {
         BorrowDate = borrowDate;
         ReturnDate = returnDate;
         DueDate = dueDate;
-        Status = status;
+        IsReturned = isReturned;
         User = user;
+        Edition = edition;
+    }
+    
+    public static Borrowing Create(DateTime borrowDate, DateTime? returnDate, DateTime dueDate, bool isReturned, 
+        User user, Edition edition)
+    {
+        return new Borrowing(borrowDate, returnDate, dueDate, isReturned, user, edition);
     }
 }

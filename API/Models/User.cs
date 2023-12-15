@@ -1,4 +1,5 @@
-﻿using API.Context;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using API.Context;
 
 namespace API.Models;
 
@@ -11,20 +12,33 @@ public class User : Entity
 
     public string StudentNumber { get; set; }
     public Department Department { get; set; }
-
-    private readonly List<Borrowing> _borrowings = new();
-    public List<Borrowing> Borrowings => _borrowings;
-
-
-    public User()
+    
+    private User()
     {
         // EF
     }
 
-    private User(string firstName, string lastName, Department department)
+    private User(string firstName, string lastName, string email, string studentNumber, Department department)
     {
         FirstName = firstName;
         LastName = lastName;
+        Email = email;
+        StudentNumber = studentNumber;
         Department = department;
     }
+    
+    public static User Create(string firstName, string lastName, string email, string studentNumber, 
+        Department department)
+    {
+        return new User(firstName, lastName, email, studentNumber, department);
+    }
+    
+    public void Update(string firstName, string lastName, string email, string studentNumber)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        StudentNumber = studentNumber;
+    }
+    
 }
