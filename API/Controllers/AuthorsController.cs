@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [ApiController]
-[Route("api/editions")]
+[Route("api/authors")]
 [Produces("application/json")]
-public class EditionsController : Controller
+public class AuthorsController : Controller
 {
     private readonly IMediator _mediator;
 
-    public EditionsController(IMediator mediator)
+    public AuthorsController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -22,15 +22,15 @@ public class EditionsController : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
-        var query = await _mediator.Send(new GetEditionsQuery());
+        var query =await _mediator.Send(new GetEditionsQuery());
         return Ok(query);
     }
 
-    [HttpGet($"{{editionId:Guid}}")]
+    [HttpGet($"{{authorId:Guid}}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get(Guid editionId)
+    public async Task<IActionResult> Get(Guid authorId)
     {
-        var query = await _mediator.Send(new GetEditionQuery(editionId));
+        var query = await _mediator.Send(new GetEditionQuery(authorId));
         return Ok(query);
     }
 
@@ -43,21 +43,21 @@ public class EditionsController : Controller
         return NoContent();
     }
 
-    [HttpPut("{book}")]
+    [HttpPut("{author}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Put(UpdateBookCommand book, Guid id)
+    public async Task<IActionResult> Put(UpdateBookCommand author, Guid id)
     {
-        await _mediator.Send(book with { Id = id });
+        await _mediator.Send(author with { Id = id });
         return NoContent();
     }
 
-    [HttpDelete($@"{{editionId:Guid}}")]
+    [HttpDelete($@"{{authorId:Guid}}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid editionId)
+    public async Task<IActionResult> Delete(Guid authorId)
     {
-        await _mediator.Send(new DeleteBookCommand(editionId));
+        await _mediator.Send(new DeleteBookCommand(authorId));
         return NoContent();
     }
 }
