@@ -1,14 +1,14 @@
+using BooksAPI.Authentication;
 using BooksAPI.Command;
 using BooksAPI.Command.Edition;
+using BooksAPI.Extensions;
 using BooksAPI.Query.Edition;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [ApiController]
-[Authorize]
 [Route("api/authors")]
 [Produces("application/json")]
 public class AuthorsController : Controller
@@ -21,6 +21,7 @@ public class AuthorsController : Controller
     }
 
     [HttpGet]
+    [AuthorizeRoles(Role.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
@@ -29,6 +30,7 @@ public class AuthorsController : Controller
     }
 
     [HttpGet($"{{authorId:Guid}}")]
+    [AuthorizeRoles(Role.User)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(Guid authorId)
     {
@@ -37,6 +39,7 @@ public class AuthorsController : Controller
     }
 
     [HttpPost]
+    [AuthorizeRoles(Role.Staff)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Post([FromBody] CreateEditionCommand command)
@@ -46,6 +49,7 @@ public class AuthorsController : Controller
     }
 
     [HttpPut("{author}")]
+    [AuthorizeRoles(Role.Staff)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Put(UpdateBookCommand author, Guid id)
@@ -55,6 +59,7 @@ public class AuthorsController : Controller
     }
 
     [HttpDelete($@"{{authorId:Guid}}")]
+    [AuthorizeRoles(Role.Staff)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid authorId)
