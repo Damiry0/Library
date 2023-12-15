@@ -1,14 +1,13 @@
-using BooksAPI.Command;
 using BooksAPI.Command.Department;
-using BooksAPI.Command.Edition;
 using BooksAPI.Query.Departament;
-using BooksAPI.Query.Edition;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/departments")]
 [Produces("application/json")]
 public class DepartamentsController : Controller
@@ -27,7 +26,7 @@ public class DepartamentsController : Controller
         var query = await _mediator.Send(new GetDepartamentsQuery());
         return Ok(query);
     }
-    
+
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

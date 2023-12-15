@@ -1,11 +1,13 @@
 using BooksAPI.Command.User;
 using BooksAPI.Query.User;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/users")]
 [Produces("application/json")]
 public class UsersController : Controller
@@ -24,7 +26,7 @@ public class UsersController : Controller
         var query = await _mediator.Send(new GetUsersQuery());
         return Ok(query);
     }
-    
+
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -33,7 +35,7 @@ public class UsersController : Controller
         await _mediator.Send(command);
         return NoContent();
     }
-    
+
     [HttpPut("{userId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -1,11 +1,13 @@
 using BooksAPI.Command.Borrowing;
 using BooksAPI.Query.Borrowing;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/borrowings")]
 [Produces("application/json")]
 public class BorrowingsController : Controller
@@ -24,7 +26,7 @@ public class BorrowingsController : Controller
         var query = await _mediator.Send(new GetBorrowingsQuery());
         return Ok(query);
     }
-    
+
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

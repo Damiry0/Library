@@ -2,11 +2,13 @@ using BooksAPI.Command;
 using BooksAPI.Command.Edition;
 using BooksAPI.Query.Edition;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/authors")]
 [Produces("application/json")]
 public class AuthorsController : Controller
@@ -22,7 +24,7 @@ public class AuthorsController : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
-        var query =await _mediator.Send(new GetEditionsQuery());
+        var query = await _mediator.Send(new GetEditionsQuery());
         return Ok(query);
     }
 
