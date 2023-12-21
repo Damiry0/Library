@@ -8,3 +8,4 @@ Simple implementation of distributed academy library system
 * CQRS + MediatR
 * Code Triggers
 * Integration Tests ( we don't test on production )
+* Continuous Integration with Github Actions
