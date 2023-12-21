@@ -1,7 +1,7 @@
 using API.Context;
 using API.Models;
+using BooksAPI.Exceptions;
 using EntityFrameworkCore.Triggered;
-using Microsoft.EntityFrameworkCore;
 
 namespace BooksAPI.Triggers
 {
@@ -13,6 +13,7 @@ namespace BooksAPI.Triggers
         {
             _applicationContext = applicationContext;
         }
+
         public Task BeforeSave(ITriggerContext<Borrowing> context, CancellationToken cancellationToken)
         {
             var userBorrowedCount = _applicationContext.Borrowings.Count(r =>
@@ -22,9 +23,10 @@ namespace BooksAPI.Triggers
             {
                 if (userBorrowedCount >= 5)
                 {
-                    throw new Exception("Cannot have more than 5 borrows per user");   
+                    throw new TriggerException("Cannot have more than 5 borrows per user");
                 }
             }
+
             return Task.CompletedTask;
         }
     }

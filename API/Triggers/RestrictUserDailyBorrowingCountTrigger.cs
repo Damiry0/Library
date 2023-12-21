@@ -1,5 +1,6 @@
 using API.Context;
 using API.Models;
+using BooksAPI.Exceptions;
 using EntityFrameworkCore.Triggered;
 
 namespace BooksAPI.Triggers
@@ -12,6 +13,7 @@ namespace BooksAPI.Triggers
         {
             _applicationContext = applicationContext;
         }
+
         public Task BeforeSave(ITriggerContext<Borrowing> context, CancellationToken cancellationToken)
         {
             if (context.ChangeType == ChangeType.Added)
@@ -25,7 +27,7 @@ namespace BooksAPI.Triggers
 
                 if (dailyBorrowedCount >= 3)
                 {
-                    throw new Exception("Cannot rent more than 3 books in one day");
+                    throw new TriggerException("Cannot rent more than 3 books in one day");
                 }
             }
 

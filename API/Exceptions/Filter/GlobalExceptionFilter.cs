@@ -27,6 +27,10 @@ public class GlobalExceptionFilter : IExceptionFilter
                 _logger.LogWarning(context.Exception.Message);
                 context.Result = new NotFoundObjectResult(context.Exception.Message);
                 break;
+            case TriggerException:
+                _logger.LogError(context.Exception.Message);
+                context.Result = new ForbidResult(context.Exception.Message);
+                break;
         }
     }
 }

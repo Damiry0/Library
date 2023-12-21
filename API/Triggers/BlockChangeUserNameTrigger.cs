@@ -1,4 +1,5 @@
 using API.Models;
+using BooksAPI.Exceptions;
 using EntityFrameworkCore.Triggered;
 
 namespace BooksAPI.Triggers
@@ -11,9 +12,10 @@ namespace BooksAPI.Triggers
             {
                 if (context.UnmodifiedEntity?.FirstName != context.Entity.FirstName)
                 {
-                    throw new Exception("Cannot modify user credentials");
+                    throw new TriggerException("Cannot modify user credentials");
                 }
             }
+
             return Task.CompletedTask;
         }
     }
