@@ -1,4 +1,3 @@
-using System;
 using API.Models;
 using BooksAPI.Triggers;
 using Microsoft.EntityFrameworkCore;
@@ -23,17 +22,13 @@ public class LibraryMySQLDbContext : DbContext
             .AddJsonFile("appsettings.json", false, true)
             .Build()
             .GetConnectionString("MySQL");
-        
+
         optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-        optionsBuilder.UseTriggers(triggerOptions =>
-        {
-            triggerOptions.AddTrigger<BlockChangeUserNameTrigger>();
-            
-        });
+        optionsBuilder.UseTriggers(triggerOptions => { triggerOptions.AddTrigger<BlockChangeUserNameTrigger>(); });
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)      
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().Navigation(e => e.Department).AutoInclude();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMySQLDbContext).Assembly);

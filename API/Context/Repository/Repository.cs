@@ -9,7 +9,8 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     private readonly LibraryMySQLDbContext _contextMySQL;
     private readonly LibraryOracleDbContext _contextOracle;
 
-    public Repository(LibraryMsSQLDbContext contextMssql, LibraryMySQLDbContext contextMySql, LibraryOracleDbContext contextOracle)
+    public Repository(LibraryMsSQLDbContext contextMssql, LibraryMySQLDbContext contextMySql,
+        LibraryOracleDbContext contextOracle)
     {
         _contextMSSQL = contextMssql;
         _contextMySQL = contextMySql;
@@ -21,7 +22,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
         var mssql = _contextMSSQL.Set<TEntity>().AsTracking().AsEnumerable();
         var mysql = _contextMySQL.Set<TEntity>().AsTracking().AsEnumerable();
         var oracle = _contextOracle.Set<TEntity>().AsTracking().AsEnumerable();
-        return mysql.Union(mssql).Union(oracle);
+        return _contextMSSQL.Set<TEntity>().AsTracking().AsEnumerable();
     }
 
     IEnumerable<TEntity> IRepository<TEntity>.GetAllAsNoTracking()
@@ -100,7 +101,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
         switch (dataCenter)
         {
             case DataCenter.MsSql:
-                 _contextMSSQL.Attach(entity);
+                _contextMSSQL.Attach(entity);
                 break;
             case DataCenter.MySql:
                 _contextMySQL.Attach(entity);

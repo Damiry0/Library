@@ -1,4 +1,3 @@
-using System;
 using API.Models;
 using BooksAPI.Triggers;
 using Microsoft.EntityFrameworkCore;
@@ -22,17 +21,14 @@ public class LibraryOracleDbContext : DbContext
             .AddJsonFile("appsettings.json", false, true)
             .Build()
             .GetConnectionString("Oracle");
-        
-        optionsBuilder.UseOracle("User Id=system;Password=yourStrongPassword123;DATA SOURCE=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=192.168.0.101)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));");
+
+        optionsBuilder.UseOracle(
+            "User Id=system;Password=yourStrongPassword123;DATA SOURCE=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=192.168.1.13)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)));");
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-        optionsBuilder.UseTriggers(triggerOptions =>
-        {
-            triggerOptions.AddTrigger<BlockChangeUserNameTrigger>();
-            
-        });
+        optionsBuilder.UseTriggers(triggerOptions => { triggerOptions.AddTrigger<BlockChangeUserNameTrigger>(); });
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)      
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().Navigation(e => e.Department).AutoInclude();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryOracleDbContext).Assembly);

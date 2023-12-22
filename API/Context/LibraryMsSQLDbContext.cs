@@ -6,7 +6,6 @@ namespace API.Context;
 
 public class LibraryMsSQLDbContext : DbContext
 {
-
     public LibraryMsSQLDbContext(DbContextOptions<LibraryMsSQLDbContext> options)
         : base(options)
     {
@@ -23,11 +22,7 @@ public class LibraryMsSQLDbContext : DbContext
         optionsBuilder.UseSqlServer(connectionString,
             options => { options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null); });
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-        optionsBuilder.UseTriggers(triggerOptions =>
-        {
-            triggerOptions.AddTrigger<BlockChangeUserNameTrigger>();
-            
-        });
+        optionsBuilder.UseTriggers(triggerOptions => { triggerOptions.AddTrigger<BlockChangeUserNameTrigger>(); });
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,7 +31,7 @@ public class LibraryMsSQLDbContext : DbContext
             .HasMany<User>()
             .WithOne(c => c.Department)
             .OnDelete(DeleteBehavior.NoAction);
-        
+
         modelBuilder.Entity<User>().Navigation(e => e.Department).AutoInclude();
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMsSQLDbContext).Assembly);
