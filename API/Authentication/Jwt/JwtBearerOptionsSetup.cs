@@ -5,13 +5,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BooksAPI.Authentication.Jwt;
 
-public class JwtBearerOptionsSetup : IConfigureOptions<JwtBearerOptions>
+public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
 {
     private readonly JwtOptions _jwtOptions;
 
-    public JwtBearerOptionsSetup(JwtOptions jwtOptions)
+    public JwtBearerOptionsSetup(IOptions<JwtOptions> jwtOptions)
     {
-        _jwtOptions = jwtOptions;
+        _jwtOptions = jwtOptions.Value;
     }
 
     public void Configure(JwtBearerOptions options)
@@ -26,5 +26,10 @@ public class JwtBearerOptionsSetup : IConfigureOptions<JwtBearerOptions>
             ValidAudience = _jwtOptions.Audience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey))
         };
+    }
+
+    public void Configure(string? name, JwtBearerOptions options)
+    {
+        Configure(options);
     }
 }
