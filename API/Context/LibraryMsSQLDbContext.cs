@@ -33,6 +33,7 @@ public class LibraryMsSQLDbContext : DbContext
             .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<User>().Navigation(e => e.Department).AutoInclude();
+        modelBuilder.Entity<User>().Navigation(e => e.UserRoles).AutoInclude();
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryMsSQLDbContext).Assembly);
     }

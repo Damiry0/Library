@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using API.Models;
 using BooksAPI.Authentication.Jwt;
+using BooksAPI.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,11 +20,13 @@ public class JwtProvider : IJwtProvider
 
     public string GenerateToken(User user)
     {
-        var claims = new Claim[]
+        var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email)
         };
+
+        foreach (var role in user.UserRoles) claims.Add(new Claim(ClaimTypes.Role, role.Role.ToRoleString()));
 
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),

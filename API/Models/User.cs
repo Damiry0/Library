@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using API.Context;
+﻿using API.Context;
 
 namespace API.Models;
 
@@ -10,9 +9,12 @@ public class User : Entity
 
     public string Email { get; set; }
 
+    private List<UserRole> _userRoles = new();
+    public IReadOnlyCollection<UserRole> UserRoles => _userRoles.AsReadOnly();
+
     public string StudentNumber { get; set; }
     public Department Department { get; set; }
-    
+
     private User()
     {
         // EF
@@ -26,13 +28,13 @@ public class User : Entity
         StudentNumber = studentNumber;
         Department = department;
     }
-    
-    public static User Create(string firstName, string lastName, string email, string studentNumber, 
+
+    public static User Create(string firstName, string lastName, string email, string studentNumber,
         Department department)
     {
         return new User(firstName, lastName, email, studentNumber, department);
     }
-    
+
     public void Update(string firstName, string lastName, string email, string studentNumber)
     {
         FirstName = firstName;
@@ -40,5 +42,4 @@ public class User : Entity
         Email = email;
         StudentNumber = studentNumber;
     }
-    
 }
